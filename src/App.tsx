@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useState } from "react";
 import "./index.css"; // Ensure Tailwind styles are loaded
 import robot from "./public/robot.png";
 import Chat from "./components/Chat";

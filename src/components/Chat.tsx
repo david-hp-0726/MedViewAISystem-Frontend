@@ -1,5 +1,3 @@
-import React from "react";
-
 // Define Type for Messages
 type Message = {
   role: "ai" | "user";
