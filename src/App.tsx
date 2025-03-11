@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./index.css"; // Ensure Tailwind styles are loaded
-import robot from "./public/robot.png";
+// import robot from "./public/robot.png";
 import Chat from "./components/Chat";
 import Control from "./components/Control";
 
@@ -26,14 +26,29 @@ function App() {
   };
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#E1E0E0] justify-between">
-      <header className="h-1/6 text-white flex gap-4 items-center py-2 justify-center">
-        <img src={robot} className="h-20" />
-        <h2 className="text-xl font-semibold text-black">Medview Chatbot</h2>
+    <div className="flex flex-col h-screen w-full bg-[#F8F9FA] justify-between">
+      {/* Header with SVG Background */}
+      <header className="h-28 flex items-center px-8 shadow-md text-white bg-gradient-to-r from-[#3C69AB] to-[#2F539B] justify-between">
+        {/* Logo / Title */}
+        <h1 className="text-4xl font-medium tracking-wide drop-shadow-lg">
+          MedView Chatbot
+        </h1>
+
+        {/* Return Link */}
+        <a
+          className="text-lg font-light bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-300"
+          href="https://www.medviewsystems.com/"
+        >
+          Return
+        </a>
       </header>
-      <div className="flex-grow px-16 mb-4 overflow-auto max-sm:px-8 ">
+
+      {/* Chat Container */}
+      <div className="flex-grow px-16 mb-4 overflow-auto max-sm:px-8">
         <Chat messages={messages} />
       </div>
+
+      {/* Control Input */}
       <Control handleSendMessage={handleSendMessage} />
     </div>
   );

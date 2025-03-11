@@ -47,34 +47,39 @@ function Control({ handleSendMessage }: ControlProps) {
   }
 
   return (
-    <div className="h-1/6 py-4 px-16 border-t flex items-center">
+    <div className="h-20 px-6 border-t flex items-center bg-gray-100 shadow-md">
+      {/* Chat Input Field */}
       <TextareaAutosize
         minRows={1}
         maxRows={4}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
-        className="flex-1 p-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 resize-none"
+        className="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3C69AB] resize-none"
         placeholder="Type a message..."
       />
+
+      {/* Send Button */}
       <button
         onClick={handleSend}
-        className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+        className="ml-3 px-5 py-2 bg-[#3C69AB] text-white font-medium rounded-xl hover:bg-[#2F539B] transition-all"
       >
         Send
       </button>
+
+      {/* Record / Stop Button */}
       {!recordActive ? (
         <button
           onClick={handleOnRecord}
-          className="ml-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+          className="ml-3 px-5 py-2 bg-green-600 text-white font-medium rounded-xl hover:bg-green-700 transition-all"
         >
-          Record
+          🎤 Record
         </button>
       ) : (
         <button
           onClick={handleStopRecord}
-          className="ml-2 px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+          className="ml-3 px-5 py-2 bg-red-600 text-white font-medium rounded-xl hover:bg-red-700 transition-all"
         >
-          Stop
+          ⏹ Stop
         </button>
       )}
     </div>
