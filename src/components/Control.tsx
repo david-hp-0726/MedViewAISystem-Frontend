@@ -3,9 +3,10 @@ import TextareaAutosize from "react-textarea-autosize";
 
 interface ControlProps {
   handleSendMessage: (message: string) => void;
+  onReopenModal: () => void; // 添加一个新的 prop 来处理重新打开弹窗
 }
 
-function Control({ handleSendMessage }: ControlProps) {
+function Control({ handleSendMessage, onReopenModal }: ControlProps) {
   const [message, setMessage] = useState("");
   const [recordActive, setRecordActive] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
@@ -82,6 +83,14 @@ function Control({ handleSendMessage }: ControlProps) {
           ⏹ Stop
         </button>
       )}
+
+      {/* Reopen Modal Button */}
+      <button
+        onClick={onReopenModal}
+        className="ml-3 px-5 py-2 bg-yellow-600 text-white font-medium rounded-xl hover:bg-yellow-700 transition-all"
+      >
+        Change Device
+      </button>
     </div>
   );
 }
