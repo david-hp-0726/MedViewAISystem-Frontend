@@ -51,7 +51,7 @@ function App() {
         {
           role: "ai",
           content: deviceType
-            ? `Server response for ${deviceType}: [Mock response] Please try holding the power button for 3 seconds to restart the device.`
+            ? `Mock response for ${deviceType}`
             : "Please select your device first.",
         },
       ]);
