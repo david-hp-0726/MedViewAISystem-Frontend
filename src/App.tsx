@@ -20,7 +20,7 @@ const deviceList = [
   "DeVilbiss IntelliPAP",
   "Fisher & Paykel SleepStyle",
   "Lowenstein Prisma",
-  "Other Medical Device"
+  "Other Medical Device",
 ];
 
 function App() {
@@ -35,7 +35,7 @@ function App() {
     if (searchTerm.trim() === "") {
       setFilteredDevices(deviceList);
     } else {
-      const results = deviceList.filter(device =>
+      const results = deviceList.filter((device) =>
         device.toLowerCase().includes(searchTerm.toLowerCase())
       );
       setFilteredDevices(results);
@@ -44,13 +44,16 @@ function App() {
 
   const handleSendMessage = (message: string) => {
     setMessages((prev) => [...prev, { role: "user", content: message }]);
-    
+
     setTimeout(() => {
       setMessages((prev) => [
         ...prev,
-        { role: "ai", content: deviceType 
-          ? `Server response for ${deviceType}: [Mock response] Please try holding the power button for 3 seconds to restart the device.` 
-          : "Please select your device first." }
+        {
+          role: "ai",
+          content: deviceType
+            ? `Server response for ${deviceType}: [Mock response] Please try holding the power button for 3 seconds to restart the device.`
+            : "Please select your device first.",
+        },
       ]);
     }, 1000);
   };
@@ -83,7 +86,7 @@ function App() {
       </div>
 
       {/* Control Input */}
-      <Control 
+      <Control
         handleSendMessage={handleSendMessage}
         onReopenModal={() => setShowModal(true)}
       />
@@ -93,7 +96,9 @@ function App() {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <div className="bg-white p-6 rounded-xl shadow-xl w-96 max-h-[80vh] flex flex-col">
             <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">Select Medical Device</h2>
+              <h2 className="text-2xl font-bold text-gray-800">
+                Select Medical Device
+              </h2>
               <button
                 onClick={() => setShowModal(false)}
                 className="text-gray-500 hover:text-gray-700 text-2xl"
@@ -101,7 +106,7 @@ function App() {
                 &times;
               </button>
             </div>
-            
+
             <input
               type="text"
               placeholder="Enter device name..."
@@ -141,7 +146,8 @@ function App() {
 const fakeMessages: Message[] = [
   {
     role: "ai",
-    content: "Hello, I am your MedView Assistant. Please select your device first.",
+    content:
+      "Hello, I am your MedView Assistant. Please select your device first.",
   },
 ];
 
