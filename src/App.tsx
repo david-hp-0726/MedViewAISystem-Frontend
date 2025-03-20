@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import "./index.css";
 import Chat from "./components/Chat";
 import Control from "./components/Control";
+import { fetchAIResponse } from "./utils/api";
 
 type Message = {
   role: "ai" | "user";
@@ -42,20 +43,22 @@ function App() {
     }
   }, [searchTerm]);
 
-  const handleSendMessage = (message: string) => {
+  const handleSendMessage = async (message: string) => {
     setMessages((prev) => [...prev, { role: "user", content: message }]);
 
-    setTimeout(() => {
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "ai",
-          content: deviceType
-            ? `Mock response for ${deviceType}`
-            : "Please select your device first.",
-        },
-      ]);
-    }, 1000);
+    let aiResponse = "";
+    setMessages((prev) => [...prev, { role: "ai", content: "" }]); // Add empty AI message
+
+    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "";
+
+    await fetchAIResponse(message, apiKey, deviceType, (chunk) => {
+      aiResponse += chunk;
+      setMessages((prev) =>
+        prev.map((msg, idx) =>
+          idx === prev.length - 1 ? { ...msg, content: aiResponse } : msg
+        )
+      );
+    });
   };
 
   return (

@@ -1,4 +1,5 @@
-// Define Type for Messages
+import ReactMarkdown from "react-markdown";
+
 type Message = {
   role: "ai" | "user";
   content: string;
@@ -30,13 +31,74 @@ function Chat({ messages }: ChatProps) {
           }`}
         >
           <div
-            className={`p-4 rounded-2xl max-w-xl flex items-center space-x-3 shadow-md ${
-              role === "user"
-                ? "bg-[#3C69AB] text-white rounded-br-none" // MedView blue, right-aligned
-                : "bg-gray-300 text-gray-800 rounded-bl-none" // Light gray for bot messages
-            }`}
+            style={{
+              wordBreak: "break-word", // Ensures text wraps
+              overflowWrap: "break-word",
+              maxWidth: "75%", // Prevents markdown from expanding too wide
+              padding: "12px",
+              borderRadius: "12px",
+              boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
+              backgroundColor: role === "user" ? "#3C69AB" : "#E0E0E0",
+              color: role === "user" ? "#ffffff" : "#333",
+            }}
           >
-            <span className="text-base">{content}</span>
+            {/* Render Markdown Content */}
+            <ReactMarkdown
+              components={{
+                p: ({ ...props }) => (
+                  <p style={{ marginBottom: "8px" }} {...props} />
+                ),
+                strong: ({ ...props }) => (
+                  <strong style={{ fontWeight: "bold" }} {...props} />
+                ),
+                a: ({ href, ...props }) => (
+                  <a
+                    href={href}
+                    style={{ color: "#007bff", textDecoration: "underline" }}
+                    {...props}
+                  />
+                ),
+                ul: ({ ...props }) => (
+                  <ul
+                    style={{ paddingLeft: "20px", marginBottom: "8px" }}
+                    {...props}
+                  />
+                ),
+                ol: ({ ...props }) => (
+                  <ol
+                    style={{ paddingLeft: "20px", marginBottom: "8px" }}
+                    {...props}
+                  />
+                ),
+                code: ({ ...props }) => (
+                  <code
+                    style={{
+                      backgroundColor: "#f4f4f4",
+                      padding: "2px 4px",
+                      borderRadius: "4px",
+                      fontFamily: "monospace",
+                      fontSize: "0.9em",
+                    }}
+                    {...props}
+                  />
+                ),
+                pre: ({ ...props }) => (
+                  <pre
+                    style={{
+                      backgroundColor: "#333",
+                      color: "#fff",
+                      padding: "10px",
+                      borderRadius: "8px",
+                      overflowX: "auto", // Enables horizontal scrolling for long code blocks
+                      maxWidth: "100%",
+                    }}
+                    {...props}
+                  />
+                ),
+              }}
+            >
+              {content}
+            </ReactMarkdown>
 
             {/* Read Aloud Button */}
             <button
