@@ -16,7 +16,7 @@ const DeviceSelectionModal: FC<DeviceSelectionModalProps> = ({
   onClose,
 }) => {
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
       <div className="bg-white p-6 rounded-xl shadow-xl w-96 max-h-[80vh] flex flex-col">
         <div className="flex justify-between items-center mb-4">
           <h2 className="text-2xl font-bold text-gray-800">
@@ -29,6 +29,9 @@ const DeviceSelectionModal: FC<DeviceSelectionModalProps> = ({
             &times;
           </button>
         </div>
+        <p className="text-sm text-gray-500 mb-3 -mt-2">
+          Selecting a device will help the AI provide more accurate answers.
+        </p>
 
         <input
           type="text"
