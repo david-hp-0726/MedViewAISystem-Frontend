@@ -4,6 +4,7 @@ import "./index.css";
 import Chat from "./components/Chat";
 import Control from "./components/Control";
 import { fetchAIResponse } from "./utils/api";
+import  DeviceSelectionModal  from "./components/DeviceSelectionModal";
 
 type Message = {
   role: "ai" | "user";
@@ -96,51 +97,13 @@ function App() {
 
       {/* Device Selection Modal */}
       {showModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
-          <div className="bg-white p-6 rounded-xl shadow-xl w-96 max-h-[80vh] flex flex-col">
-            <div className="flex justify-between items-center mb-4">
-              <h2 className="text-2xl font-bold text-gray-800">
-                Select Medical Device
-              </h2>
-              <button
-                onClick={() => setShowModal(false)}
-                className="text-gray-500 hover:text-gray-700 text-2xl"
-              >
-                &times;
-              </button>
-            </div>
-
-            <input
-              type="text"
-              placeholder="Enter device name..."
-              className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-blue-500 transition-colors"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              autoFocus
-            />
-
-            <div className="mt-4 overflow-y-auto flex-1">
-              {filteredDevices.map((device, index) => (
-                <button
-                  key={index}
-                  onClick={() => {
-                    setDeviceType(device);
-                    setShowModal(false);
-                  }}
-                  className="w-full p-3 text-left hover:bg-blue-50 rounded-lg transition-colors flex items-center"
-                >
-                  <span className="flex-1">{device}</span>
-                  <span className="text-blue-500 text-sm">Select</span>
-                </button>
-              ))}
-              {filteredDevices.length === 0 && (
-                <div className="text-gray-500 p-3 text-center">
-                  No matching devices found
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
+        <DeviceSelectionModal
+          searchTerm={searchTerm}
+          setSearchTerm={setSearchTerm}
+          filteredDevices={filteredDevices}
+          onSelectDevice={(device) => setDeviceType(device)}
+          onClose={() => setShowModal(false)}
+        />
       )}
     </div>
   );
