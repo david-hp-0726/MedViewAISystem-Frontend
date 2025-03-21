@@ -1,9 +1,9 @@
-import { useState, useRef } from "react";
+import React, { useState, useRef } from "react";
 import TextareaAutosize from "react-textarea-autosize";
 
 interface ControlProps {
   handleSendMessage: (message: string) => void;
-  onReopenModal: () => void; // 添加一个新的 prop 来处理重新打开弹窗
+  onReopenModal: () => void; 
 }
 
 function Control({ handleSendMessage, onReopenModal }: ControlProps) {
@@ -46,6 +46,12 @@ function Control({ handleSendMessage, onReopenModal }: ControlProps) {
       setRecordActive(false);
     }
   }
+  const handleKeyDown = (event:React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === 'Enter' && !event.shiftKey) {
+      event.preventDefault();
+      handleSend();
+    }
+  }
 
   return (
     <div className="h-20 px-6 border-t flex items-center bg-gray-100 shadow-md">
@@ -55,6 +61,7 @@ function Control({ handleSendMessage, onReopenModal }: ControlProps) {
         maxRows={4}
         value={message}
         onChange={(e) => setMessage(e.target.value)}
+        onKeyDown={handleKeyDown}
         className="flex-1 p-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-[#3C69AB] resize-none"
         placeholder="Type a message..."
       />

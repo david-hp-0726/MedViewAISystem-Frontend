@@ -73,7 +73,7 @@ function Chat({ messages }: ChatProps) {
                 code: ({ ...props }) => (
                   <code
                     style={{
-                      backgroundColor: "#f4f4f4",
+                      backgroundColor: "#a1a1a1",
                       padding: "2px 4px",
                       borderRadius: "4px",
                       fontFamily: "monospace",
