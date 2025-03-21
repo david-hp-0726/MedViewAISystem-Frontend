@@ -149,7 +149,7 @@ function App() {
 const fakeMessages: Message[] = [
   {
     role: "ai",
-    content: "Hi, I am your MedView Assistant. How can I help you.",
+    content: "Hi, I am your MedView Assistant. How can I help you?",
   },
 ];
 
