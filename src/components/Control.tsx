@@ -3,7 +3,7 @@ import TextareaAutosize from "react-textarea-autosize";
 
 interface ControlProps {
   handleSendMessage: (message: string) => void;
-  onReopenModal: () => void; // 添加一个新的 prop 来处理重新打开弹窗
+  onReopenModal: () => void; 
 }
 
 function Control({ handleSendMessage, onReopenModal }: ControlProps) {

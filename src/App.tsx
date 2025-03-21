@@ -4,7 +4,7 @@ import "./index.css";
 import Chat from "./components/Chat";
 import Control from "./components/Control";
 import { fetchAIResponse } from "./utils/api";
-import  DeviceSelectionModal  from "./components/DeviceSelectionModal";
+import DeviceSelectionModal from "./components/DeviceSelectionModal";
 
 type Message = {
   role: "ai" | "user";
@@ -31,6 +31,7 @@ function App() {
   const [deviceType, setDeviceType] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDevices, setFilteredDevices] = useState<string[]>([]);
+  const [showBubble, setShowBubble] = useState(true);
 
   // Device search functionality
   useEffect(() => {
@@ -61,6 +62,11 @@ function App() {
       );
     });
   };
+  const getFrequentQuestions = (device: string): string[] => [
+    `What are the recommended settings for ${device}?`,
+    `How to perform daily maintenance on ${device}?`,
+    `How to troubleshoot connectivity issues with ${device}?`,
+  ];
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#F8F9FA] justify-between">
@@ -87,6 +93,20 @@ function App() {
       {/* Chat Container */}
       <div className="flex-grow px-16 mb-4 overflow-auto max-sm:px-8">
         <Chat messages={messages} />
+        {deviceType && showBubble && (
+          <div className="fixed left-8 bottom-28 z-50 flex flex-col gap-2 animate-fade-in">
+            {getFrequentQuestions(deviceType).map((question, index) => (
+              <button
+                key={index}
+                onClick={() => {handleSendMessage(question); setShowBubble(false);}}
+                className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all 
+                   border border-gray-200 hover:border-blue-200 hover:text-blue-600"
+              >
+                {question}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Control Input */}
