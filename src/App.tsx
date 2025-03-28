@@ -71,7 +71,7 @@ function App() {
   return (
     <div className="flex flex-col h-screen w-full bg-[#F8F9FA] justify-between">
       {/* Header */}
-      <header className="h-28 flex items-center px-8 shadow-md text-white bg-gradient-to-r from-[#3C69AB] to-[#2F539B] justify-between">
+      <header className="h-28 flex flex-shrink-0 items-center px-8 shadow-md text-white bg-gradient-to-r from-[#3C69AB] to-[#2F539B] justify-between">
         <div className="flex items-center">
           <h1 className="text-4xl font-medium tracking-wide drop-shadow-lg">
             MedView Chatbot
@@ -98,7 +98,10 @@ function App() {
             {getFrequentQuestions(deviceType).map((question, index) => (
               <button
                 key={index}
-                onClick={() => {handleSendMessage(question); setShowBubble(false);}}
+                onClick={() => {
+                  handleSendMessage(question);
+                  setShowBubble(false);
+                }}
                 className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all 
                    border border-gray-200 hover:border-blue-200 hover:text-blue-600"
               >

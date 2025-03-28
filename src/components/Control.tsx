@@ -3,7 +3,7 @@ import TextareaAutosize from "react-textarea-autosize";
 
 interface ControlProps {
   handleSendMessage: (message: string) => void;
-  onReopenModal: () => void; 
+  onReopenModal: () => void;
 }
 
 function Control({ handleSendMessage, onReopenModal }: ControlProps) {
@@ -46,15 +46,15 @@ function Control({ handleSendMessage, onReopenModal }: ControlProps) {
       setRecordActive(false);
     }
   }
-  const handleKeyDown = (event:React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === 'Enter' && !event.shiftKey) {
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
+    if (event.key === "Enter" && !event.shiftKey) {
       event.preventDefault();
       handleSend();
     }
-  }
+  };
 
   return (
-    <div className="h-20 px-6 border-t flex items-center bg-gray-100 shadow-md">
+    <div className="h-20 px-6 border-t flex items-center bg-gray-100 shadow-md flex-shrink-0">
       {/* Chat Input Field */}
       <TextareaAutosize
         minRows={1}
