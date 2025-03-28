@@ -22,7 +22,7 @@ function Chat({ messages }: ChatProps) {
   };
 
   return (
-    <div className="flex-1 overflow-y-auto p-6 space-y-4">
+    <div className="overflow-y-auto p-6 pb-44 space-y-4">
       {messages.map(({ role, content }, index) => (
         <div
           key={index}
@@ -38,7 +38,7 @@ function Chat({ messages }: ChatProps) {
               padding: "12px",
               borderRadius: "12px",
               boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
-              backgroundColor: role === "user" ? "#3C69AB" : "#E0E0E0",
+              backgroundColor: role === "user" ? "#57AE5B" : "#ffffff",
               color: role === "user" ? "#ffffff" : "#333",
             }}
           >

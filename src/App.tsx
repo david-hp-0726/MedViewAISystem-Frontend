@@ -1,4 +1,3 @@
-// App.tsx
 import { useState, useEffect } from "react";
 import "./index.css";
 import Chat from "./components/Chat";
@@ -31,7 +30,8 @@ function App() {
   const [deviceType, setDeviceType] = useState<string>("");
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredDevices, setFilteredDevices] = useState<string[]>([]);
-  const [showBubble, setShowBubble] = useState(true);
+  const [showBubble] = useState(true);
+  const [showRecommendations, setShowRecommendations] = useState(true);
 
   // Device search functionality
   useEffect(() => {
@@ -46,12 +46,15 @@ function App() {
   }, [searchTerm]);
 
   const handleSendMessage = async (message: string) => {
-    setMessages((prev) => [...prev, { role: "user", content: message }]);
+    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "";
+
+    setMessages((prev) => [
+      ...prev,
+      { role: "user", content: message },
+      { role: "ai", content: "" },
+    ]);
 
     let aiResponse = "";
-    setMessages((prev) => [...prev, { role: "ai", content: "" }]); // Add empty AI message
-
-    const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "";
 
     await fetchAIResponse(message, apiKey, deviceType, (chunk) => {
       aiResponse += chunk;
@@ -62,6 +65,7 @@ function App() {
       );
     });
   };
+
   const getFrequentQuestions = (device: string): string[] => [
     `What are the recommended settings for ${device}?`,
     `How to perform daily maintenance on ${device}?`,
@@ -69,9 +73,9 @@ function App() {
   ];
 
   return (
-    <div className="flex flex-col h-screen w-full bg-[#F8F9FA] justify-between">
+    <div className="flex flex-col h-screen w-full bg-[#f5f5f5] justify-between">
       {/* Header */}
-      <header className="h-28 flex flex-shrink-0 items-center px-8 shadow-md text-white bg-gradient-to-r from-[#3C69AB] to-[#2F539B] justify-between">
+      <header className="h-24 flex flex-shrink-0 items-center px-8 shadow-md text-white bg-gradient-to-r from-[#3C69AB] to-[#2F539B] justify-between">
         <div className="flex items-center">
           <h1 className="text-4xl font-medium tracking-wide drop-shadow-lg">
             MedView Chatbot
@@ -93,21 +97,34 @@ function App() {
       {/* Chat Container */}
       <div className="flex-grow px-16 mb-4 overflow-auto max-sm:px-8">
         <Chat messages={messages} />
+
         {deviceType && showBubble && (
-          <div className="fixed left-8 bottom-28 z-50 flex flex-col gap-2 animate-fade-in">
-            {getFrequentQuestions(deviceType).map((question, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  handleSendMessage(question);
-                  setShowBubble(false);
-                }}
-                className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all 
-                   border border-gray-200 hover:border-blue-200 hover:text-blue-600"
-              >
-                {question}
-              </button>
-            ))}
+          <div className="fixed right-20 bottom-44 z-50 flex flex-col gap-2 animate-fade-in">
+            <button
+              onClick={() => setShowRecommendations((prev) => !prev)}
+              className="text-sm text-gray-500 hover:text-gray-700 underline self-end"
+            >
+              {showRecommendations
+                ? "Hide suggestions ▲"
+                : "Show suggestions ▼"}
+            </button>
+
+            {showRecommendations && (
+              <div className="flex flex-col gap-2">
+                {getFrequentQuestions(deviceType).map((question, index) => (
+                  <button
+                    key={index}
+                    onClick={() => {
+                      handleSendMessage(question);
+                    }}
+                    className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all 
+                      border border-gray-200 hover:border-blue-200 hover:text-blue-600"
+                  >
+                    {question}
+                  </button>
+                ))}
+              </div>
+            )}
           </div>
         )}
       </div>
