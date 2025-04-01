@@ -32,6 +32,7 @@ function App() {
   const [filteredDevices, setFilteredDevices] = useState<string[]>([]);
   const [showBubble] = useState(true);
   const [showRecommendations, setShowRecommendations] = useState(true);
+  const [largeFont, setLargeFont] = useState(true);
 
   // Device search functionality
   useEffect(() => {
@@ -86,17 +87,25 @@ function App() {
             </span>
           )}
         </div>
-        <a
-          className="text-lg font-light bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-300"
-          href="https://www.medviewsystems.com/"
-        >
-          Return
-        </a>
+        <div className="flex items-center gap-4">
+          <button
+            onClick={() => setLargeFont((prev) => !prev)}
+            className="text-sm sm:text-base font-light bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-300"
+          >
+            {largeFont ? "Normal Font" : "Large Font"}
+          </button>
+          {/* <a
+            className="text-sm sm:text-base font-light bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-300"
+            href="https://www.medviewsystems.com/"
+          >
+            Return
+          </a> */}
+        </div>
       </header>
 
       {/* Chat Container */}
       <div className="flex-grow px-16 mb-4 overflow-auto max-sm:px-8">
-        <Chat messages={messages} />
+        <Chat messages={messages} largeFont={largeFont} />
 
         {deviceType && showBubble && (
           <div className="fixed right-20 bottom-44 z-50 flex flex-col gap-2 animate-fade-in">
