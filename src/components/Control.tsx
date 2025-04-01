@@ -54,8 +54,8 @@ function Control({ handleSendMessage, onReopenModal }: ControlProps) {
   };
 
   return (
-    <div className="fixed bottom-6 left-1/2 transform -translate-x-1/2 w-[90%] max-w-4xl bg-white/80 backdrop-blur-md border border-gray-200 shadow-xl rounded-2xl p-4 pt-2 z-50">
-      {/* First row: message input only */}
+    <div className="fixed bottom-4 left-1/2 transform -translate-x-1/2 w-[95%] sm:w-[90%] max-w-4xl bg-white/80 backdrop-blur-md border border-gray-200 shadow-xl rounded-2xl p-3 z-50">
+      {/* Message input */}
       <div className="flex items-center gap-3">
         <TextareaAutosize
           minRows={1}
@@ -64,42 +64,30 @@ function Control({ handleSendMessage, onReopenModal }: ControlProps) {
           onChange={(e) => setMessage(e.target.value)}
           onKeyDown={handleKeyDown}
           placeholder="Type your message here..."
-          className="flex-1 resize-none p-3 rounded-xl border border-transparent focus:outline-none focus:ring-2 focus:ring-transparent bg-transparent placeholder:text-gray-500"
+          className="flex-1 resize-none p-2 rounded-xl border border-transparent focus:outline-none focus:ring-2 focus:ring-transparent bg-transparent placeholder:text-gray-500 text-sm sm:text-base"
         />
-      </div>
-
-      {/* Second row: record and device buttons (left), send button (right) */}
-      <div className="flex justify-between items-center mt-3">
-        <div className="flex gap-3">
-          {!recordActive ? (
-            <button
-              onClick={handleOnRecord}
-              className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border-black border-1 border"
-            >
-              🎤 Start Recording
-            </button>
-          ) : (
-            <button
-              onClick={handleStopRecord}
-              className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border-black border-1 border"
-            >
-              ⏹ Stop Recording
-            </button>
-          )}
-
-          <button
-            onClick={onReopenModal}
-            className="px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border-black border-1 border"
-          >
-            ⚙️ Change Device
-          </button>
-        </div>
-
         <button
           onClick={handleSend}
-          className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition"
+          className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition text-sm sm:text-base"
         >
-          📤 Send
+          Send
+        </button>
+      </div>
+
+      {/* Buttons row */}
+      <div className="flex justify-start items-center mt-3 gap-2 flex-wrap">
+        <button
+          onClick={recordActive ? handleStopRecord : handleOnRecord}
+          className="flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base"
+        >
+          {recordActive ? "⏹ Stop Recording" : "🎤 Start Recording"}
+        </button>
+
+        <button
+          onClick={onReopenModal}
+          className="flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base"
+        >
+          ⚙️ Change Device
         </button>
       </div>
     </div>

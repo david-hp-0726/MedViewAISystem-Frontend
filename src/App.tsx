@@ -10,7 +10,6 @@ type Message = {
   content: string;
 };
 
-// Full device list (example)
 const deviceList = [
   "AirSense 11",
   "AirSense 10",
@@ -34,7 +33,6 @@ function App() {
   const [showRecommendations, setShowRecommendations] = useState(true);
   const [largeFont, setLargeFont] = useState(true);
 
-  // Device search functionality
   useEffect(() => {
     if (searchTerm.trim() === "") {
       setFilteredDevices(deviceList);
@@ -76,39 +74,42 @@ function App() {
   return (
     <div className="flex flex-col h-screen w-full bg-[#f5f5f5] justify-between">
       {/* Header */}
-      <header className="h-24 flex flex-shrink-0 items-center px-8 shadow-md text-white bg-gradient-to-r from-[#3C69AB] to-[#2F539B] justify-between">
-        <div className="flex items-center">
-          <h1 className="text-4xl font-medium tracking-wide drop-shadow-lg">
-            MedView Chatbot
-          </h1>
-          {deviceType && (
-            <span className="ml-4 text-lg bg-white/20 px-3 py-1 rounded-full">
-              Current Device: {deviceType}
-            </span>
-          )}
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            onClick={() => setLargeFont((prev) => !prev)}
-            className="text-sm sm:text-base font-light bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-300"
-          >
-            {largeFont ? "Normal Font" : "Large Font"}
-          </button>
-          {/* <a
-            className="text-sm sm:text-base font-light bg-white/20 px-4 py-2 rounded-lg hover:bg-white/30 transition-all duration-300"
-            href="https://www.medviewsystems.com/"
-          >
-            Return
-          </a> */}
+      <header className="bg-gradient-to-r from-[#3C69AB] to-[#2F539B] text-white shadow-md px-4 py-4 sm:px-8 sm:py-5">
+        <div className="flex flex-col sm:flex-row sm:justify-between sm:items-center gap-2 sm:gap-4">
+          {/* Title and Device Info */}
+          <div className="flex flex-row justify-between sm:flex-row sm:items-center sm:gap-4">
+            <h1 className="text-2xl sm:text-4xl font-semibold tracking-wide drop-shadow-lg">
+              MedView Chatbot
+            </h1>
+
+            {deviceType && (
+              <span className="mt-1 sm:mt-0 text-sm sm:text-base bg-white/20 px-3 py-1 rounded-full inline-block w-fit">
+                <span className="hidden lg:inline">Current Device: </span>
+                {deviceType}
+              </span>
+            )}
+          </div>
+
+          {/* Font Toggle Button */}
+          <div className="flex justify-end sm:justify-start">
+            <button
+              onClick={() => setLargeFont((prev) => !prev)}
+              className={`text-sm sm:text-base bg-white/20 px-4 py-2 rounded-full hover:bg-white/30 transition-all duration-300 w-fit ${
+                !largeFont ? "font-bold" : "font-normal"
+              }`}
+            >
+              {largeFont ? "Normal Font" : "Large Font"}
+            </button>
+          </div>
         </div>
       </header>
 
       {/* Chat Container */}
-      <div className="flex-grow px-16 mb-4 overflow-auto max-sm:px-8">
+      <div className="flex-grow px-4 sm:px-16 mb-4 overflow-auto">
         <Chat messages={messages} largeFont={largeFont} />
 
         {deviceType && showBubble && (
-          <div className="fixed right-20 bottom-44 z-50 flex flex-col gap-2 animate-fade-in">
+          <div className="fixed bottom-36 right-4 sm:right-20 z-50 flex flex-col gap-2 animate-fade-in max-w-[90vw]">
             <button
               onClick={() => setShowRecommendations((prev) => !prev)}
               className="text-sm text-gray-500 hover:text-gray-700 underline self-end"
@@ -126,7 +127,7 @@ function App() {
                     onClick={() => {
                       handleSendMessage(question);
                     }}
-                    className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all 
+                    className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all \
                       border border-gray-200 hover:border-blue-200 hover:text-blue-600"
                   >
                     {question}
