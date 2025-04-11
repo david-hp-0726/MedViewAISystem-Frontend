@@ -6,6 +6,7 @@ interface ControlProps {
   toggleUseCache: () => void;
   onReopenModal: () => void;
   useCache: boolean;
+  messageLoading: boolean;
 }
 
 function Control({
@@ -13,6 +14,7 @@ function Control({
   toggleUseCache,
   onReopenModal,
   useCache,
+  messageLoading,
 }: ControlProps) {
   const [message, setMessage] = useState("");
   const [recordActive, setRecordActive] = useState(false);
@@ -75,6 +77,7 @@ function Control({
         />
         <button
           onClick={handleSend}
+          disabled={messageLoading}
           className="px-4 py-2 bg-black text-white rounded-xl hover:bg-gray-900 transition text-sm sm:text-base"
         >
           Send
@@ -99,7 +102,7 @@ function Control({
 
         <button
           onClick={toggleUseCache}
-          className={`h-full flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base ${
+          className={`flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base ${
             useCache && "border-blue-500 text-blue-500 break-words"
           }`}
         >

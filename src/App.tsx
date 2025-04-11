@@ -34,6 +34,7 @@ function App() {
   const [showRecommendations, setShowRecommendations] = useState(true);
   const [largeFont, setLargeFont] = useState(false);
   const [useCache, setUseCache] = useState(false);
+  const [messageLoading, setMessageLoading] = useState(false);
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -53,6 +54,7 @@ function App() {
       ? "http://localhost:8000/ask"
       : import.meta.env.VITE_RENDER_URL + "/ask";
     // const backendUrl = import.meta.env.VITE_RENDER_URL + "/ask";
+    setMessageLoading(true);
 
     setMessages((prev) => [
       ...prev,
@@ -90,6 +92,7 @@ function App() {
             )
           );
 
+          setMessageLoading(false);
           return; // ✅ stop here, don’t call the AI
         }
       } catch (err) {
@@ -109,6 +112,8 @@ function App() {
         )
       );
     });
+
+    setMessageLoading(false);
   };
 
   const getFrequentQuestions = (device: string): string[] => [
@@ -174,6 +179,7 @@ function App() {
                 {getFrequentQuestions(deviceType).map((question, index) => (
                   <button
                     key={index}
+                    disabled={messageLoading}
                     onClick={() => {
                       handleSendMessage(question);
                     }}
@@ -195,6 +201,7 @@ function App() {
         toggleUseCache={toggleUseCache}
         onReopenModal={() => setShowModal(true)}
         useCache={useCache}
+        messageLoading={messageLoading}
       />
 
       {/* Device Selection Modal */}
