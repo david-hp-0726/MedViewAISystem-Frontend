@@ -3,10 +3,17 @@ import TextareaAutosize from "react-textarea-autosize";
 
 interface ControlProps {
   handleSendMessage: (message: string) => void;
+  toggleUseCache: () => void;
   onReopenModal: () => void;
+  useCache: boolean;
 }
 
-function Control({ handleSendMessage, onReopenModal }: ControlProps) {
+function Control({
+  handleSendMessage,
+  toggleUseCache,
+  onReopenModal,
+  useCache,
+}: ControlProps) {
   const [message, setMessage] = useState("");
   const [recordActive, setRecordActive] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
@@ -80,14 +87,23 @@ function Control({ handleSendMessage, onReopenModal }: ControlProps) {
           onClick={recordActive ? handleStopRecord : handleOnRecord}
           className="flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base"
         >
-          {recordActive ? "⏹ Stop Recording" : "🎤 Start Recording"}
+          {recordActive ? "⏹ Stop Recording" : "Start Recording"}
         </button>
 
         <button
           onClick={onReopenModal}
           className="flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base"
         >
-          ⚙️ Change Device
+          Change Device
+        </button>
+
+        <button
+          onClick={toggleUseCache}
+          className={`h-full flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base ${
+            useCache && "border-blue-500 text-blue-500 break-words"
+          }`}
+        >
+          Cache Mode
         </button>
       </div>
     </div>

@@ -3,6 +3,7 @@ import ReactMarkdown from "react-markdown";
 type Message = {
   role: "ai" | "user";
   content: string;
+  cached: boolean;
 };
 
 interface ChatProps {
@@ -24,7 +25,7 @@ function Chat({ messages, largeFont }: ChatProps) {
 
   return (
     <div className="overflow-y-auto p-6 pb-44 space-y-4">
-      {messages.map(({ role, content }, index) => (
+      {messages.map(({ role, content, cached }, index) => (
         <div
           key={index}
           className={`flex ${
@@ -33,17 +34,25 @@ function Chat({ messages, largeFont }: ChatProps) {
         >
           <div
             style={{
-              wordBreak: "break-word", // Ensures text wraps
+              wordBreak: "break-word",
               overflowWrap: "break-word",
-              maxWidth: "75%", // Prevents markdown from expanding too wide
-              padding: "12px",
+              maxWidth: "75%",
+              padding: `${cached ? "20px" : "12px"} 12px 12px 12px`,
               borderRadius: "12px",
               boxShadow: "0px 4px 6px rgba(0, 0, 0, 0.1)",
               backgroundColor: role === "user" ? "#57AE5B" : "#ffffff",
               color: role === "user" ? "#ffffff" : "#333",
-              fontSize: largeFont ? "1.25rem" : "1rem", // Adjust font size based on prop
+              fontSize: largeFont ? "1.25rem" : "1rem",
+              position: "relative", // for positioning the badge
             }}
           >
+            {/* Optional Cached Badge */}
+            {cached && (
+              <span className="absolute top-1 left-2 text-xs text-blue-600 font-semibold bg-blue-100 px-2 py-0.5 rounded-full">
+                Cached
+              </span>
+            )}
+
             {/* Render Markdown Content */}
             {content === "" ? (
               <div className="flex items-center space-x-2">
@@ -63,7 +72,10 @@ function Chat({ messages, largeFont }: ChatProps) {
                   a: ({ href, ...props }) => (
                     <a
                       href={href}
-                      style={{ color: "#007bff", textDecoration: "underline" }}
+                      style={{
+                        color: "#007bff",
+                        textDecoration: "underline",
+                      }}
                       {...props}
                     />
                   ),
