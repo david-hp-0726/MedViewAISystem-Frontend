@@ -35,6 +35,7 @@ function App() {
   const [largeFont, setLargeFont] = useState(false);
   const [useCache, setUseCache] = useState(false);
   const [messageLoading, setMessageLoading] = useState(false);
+  const [suggestedQuestions, setSuggestedQuestions] = useState<string[]>([]);
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -48,8 +49,31 @@ function App() {
   }, [searchTerm]);
 
   useEffect(() => {
-    console.log("Message loading state:", messageLoading);
-  }, [messageLoading]);
+    const fetchSuggestedQuestions = async () => {
+      if (!deviceType || deviceType == "Other Medical Device") {
+        setSuggestedQuestions([]);
+        return;
+      }
+
+      try {
+        const isDev = window.location.hostname === "localhost";
+        const backendUrl = isDev
+          ? "http://localhost:8000/faqs"
+          : import.meta.env.VITE_RENDER_URL + "/faqs";
+
+        const res = await fetch(
+          `${backendUrl}?device=${encodeURIComponent(deviceType)}`
+        );
+        const data = await res.json();
+        setSuggestedQuestions(data.questions.slice(0, 3)); // Limit to 3 questions
+      } catch (err) {
+        console.error("Failed to fetch FAQs:", err);
+        setSuggestedQuestions(getFrequentQuestions(deviceType));
+      }
+    };
+
+    fetchSuggestedQuestions();
+  }, [deviceType]);
 
   const handleSendMessage = async (message: string) => {
     if (messageLoading) return;
@@ -192,7 +216,7 @@ function App() {
 
             {showRecommendations && (
               <div className="flex flex-col gap-2">
-                {getFrequentQuestions(deviceType).map((question, index) => (
+                {suggestedQuestions.map((question, index) => (
                   <button
                     key={index}
                     disabled={messageLoading}
