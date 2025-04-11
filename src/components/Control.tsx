@@ -101,13 +101,9 @@ function Control({
         </button>
         <button
           onClick={toggleUseCache}
-<<<<<<< HEAD
-          className={`flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base ${
-=======
           onMouseEnter={() => setShowCacheTooltip(true)}
           onMouseLeave={() => setShowCacheTooltip(false)}
           className={`h-full flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base relative ${
->>>>>>> 66712fed13eaf7a0743abe374e111434f10353a1
             useCache && "border-blue-500 text-blue-500 break-words"
           }`}
         >
