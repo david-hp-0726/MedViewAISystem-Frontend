@@ -100,7 +100,11 @@ function Control({
           Change Device
         </button>
         <button
-          onClick={toggleUseCache}
+          onClick={() => {
+            toggleUseCache();
+            setShowCacheTooltip(true);
+            setTimeout(() => setShowCacheTooltip(false), 3000);
+          }}
           onMouseEnter={() => setShowCacheTooltip(true)}
           onMouseLeave={() => setShowCacheTooltip(false)}
           className={`h-full flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base relative ${
