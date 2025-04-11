@@ -47,7 +47,12 @@ function App() {
     }
   }, [searchTerm]);
 
+  useEffect(() => {
+    console.log("Message loading state:", messageLoading);
+  }, [messageLoading]);
+
   const handleSendMessage = async (message: string) => {
+    if (messageLoading) return;
     const isDev = window.location.hostname === "localhost";
     const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "";
     const backendUrl = isDev
@@ -103,17 +108,28 @@ function App() {
       }
     }
 
-    // Directly Call OpenRouter AI
-    await fetchAIResponse(message, apiKey, deviceType, (chunk) => {
-      aiResponse += chunk;
+    try {
+      // Directly Call OpenRouter AI
+      await fetchAIResponse(message, apiKey, deviceType, (chunk) => {
+        aiResponse += chunk;
+        setMessages((prev) =>
+          prev.map((msg, idx) =>
+            idx === prev.length - 1 ? { ...msg, content: aiResponse } : msg
+          )
+        );
+      });
+    } catch (err) {
+      console.error("OpenRouter API failed:", err);
       setMessages((prev) =>
         prev.map((msg, idx) =>
-          idx === prev.length - 1 ? { ...msg, content: aiResponse } : msg
+          idx === prev.length - 1
+            ? { ...msg, content: "Sorry, something went wrong with the AI." }
+            : msg
         )
       );
-    });
-
-    setMessageLoading(false);
+    } finally {
+      setMessageLoading(false);
+    }
   };
 
   const getFrequentQuestions = (device: string): string[] => [
