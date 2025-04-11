@@ -57,7 +57,7 @@ function Control({
     }
   }
   const handleKeyDown = (event: React.KeyboardEvent<HTMLTextAreaElement>) => {
-    if (event.key === "Enter" && !event.shiftKey) {
+    if (event.key === "Enter" && !event.shiftKey && !messageLoading) {
       event.preventDefault();
       handleSend();
     }
