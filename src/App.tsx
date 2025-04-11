@@ -215,7 +215,7 @@ const fakeMessages: Message[] = [
   {
     role: "ai",
     cached: false,
-    content: "Hi, I am your MedView Assistant. How can I help you?",
+    content: "Hello, I am your MedView Assistant. How can I help you?",
   },
 ];
 
