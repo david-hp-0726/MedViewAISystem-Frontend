@@ -20,6 +20,8 @@ function Control({
   const [recordActive, setRecordActive] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [showCacheTooltip, setShowCacheTooltip] = useState(false);
+  const hoverTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const isMobile = /Mobi|Android/i.test(navigator.userAgent);
 
   const handleSend = () => {
     if (message.trim() === "") return;
@@ -105,14 +107,25 @@ function Control({
             setShowCacheTooltip(true);
             setTimeout(() => setShowCacheTooltip(false), 3000);
           }}
-          onMouseEnter={() => setShowCacheTooltip(true)}
-          onMouseLeave={() => setShowCacheTooltip(false)}
+          onMouseEnter={() => {
+            if (isMobile) return;
+            hoverTimeoutRef.current = setTimeout(() => {
+              setShowCacheTooltip(true);
+            }, 500);
+          }}
+          onMouseLeave={() => {
+            if (hoverTimeoutRef.current) {
+              clearTimeout(hoverTimeoutRef.current);
+              hoverTimeoutRef.current = null;
+            }
+            setShowCacheTooltip(false);
+          }}
           className={`h-full flex-1 sm:flex-none px-4 py-2 bg-white text-black rounded-full hover:bg-gray-100 transition border border-black text-sm sm:text-base relative ${
             useCache && "border-blue-500 text-blue-500 break-words"
           }`}
         >
           Cache Mode
-          {showCacheTooltip && (
+          {showCacheTooltip && !isMobile && (
             <div className="absolute bottom-full left-1/2 transform -translate-x-1/2 mb-2 px-4 py-2 bg-gray-800 text-white text-sm rounded-lg w-64 shadow-xl z-50">
               <div className="whitespace-normal">
                 <span className="font-semibold text-green-400">
