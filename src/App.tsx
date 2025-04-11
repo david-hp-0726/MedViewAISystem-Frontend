@@ -7,6 +7,7 @@ import DeviceSelectionModal from "./components/DeviceSelectionModal";
 
 type Message = {
   role: "ai" | "user";
+  cached: boolean;
   content: string;
 };
 
@@ -31,7 +32,8 @@ function App() {
   const [filteredDevices, setFilteredDevices] = useState<string[]>([]);
   const [showBubble] = useState(true);
   const [showRecommendations, setShowRecommendations] = useState(true);
-  const [largeFont, setLargeFont] = useState(true);
+  const [largeFont, setLargeFont] = useState(false);
+  const [useCache, setUseCache] = useState(false);
 
   useEffect(() => {
     if (searchTerm.trim() === "") {
@@ -45,16 +47,60 @@ function App() {
   }, [searchTerm]);
 
   const handleSendMessage = async (message: string) => {
+    const isDev = window.location.hostname === "localhost";
     const apiKey = import.meta.env.VITE_OPENROUTER_API_KEY || "";
+    const backendUrl = isDev
+      ? "http://localhost:8000/ask"
+      : import.meta.env.VITE_RENDER_URL + "/ask";
+    // const backendUrl = import.meta.env.VITE_RENDER_URL + "/ask";
 
     setMessages((prev) => [
       ...prev,
-      { role: "user", content: message },
-      { role: "ai", content: "" },
+      { role: "user", cached: false, content: message },
+      { role: "ai", cached: false, content: "" },
     ]);
 
     let aiResponse = "";
 
+    // Try the FastAPI FAQ cache
+    if (useCache) {
+      try {
+        const cachedRes = await fetch(backendUrl, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            device: deviceType,
+            question: message,
+          }),
+        });
+
+        const cachedData = await cachedRes.json();
+
+        // If similarity is high enough, return cached answer
+        if (cachedRes.ok && cachedData.similarity >= 0.7) {
+          aiResponse = cachedData.answer;
+
+          setMessages((prev) =>
+            prev.map((msg, idx) =>
+              idx === prev.length - 1
+                ? { ...msg, content: aiResponse, cached: true }
+                : msg
+            )
+          );
+
+          return; // ✅ stop here, don’t call the AI
+        }
+      } catch (err) {
+        console.warn(
+          "Failed to fetch from FAQ cache. Falling back to AI...",
+          err
+        );
+      }
+    }
+
+    // Directly Call OpenRouter AI
     await fetchAIResponse(message, apiKey, deviceType, (chunk) => {
       aiResponse += chunk;
       setMessages((prev) =>
@@ -70,6 +116,10 @@ function App() {
     `How to perform daily maintenance on ${device}?`,
     `How to troubleshoot connectivity issues with ${device}?`,
   ];
+
+  const toggleUseCache = () => {
+    setUseCache((prev) => !prev);
+  };
 
   return (
     <div className="flex flex-col h-screen w-full bg-[#f5f5f5] justify-between">
@@ -109,7 +159,7 @@ function App() {
         <Chat messages={messages} largeFont={largeFont} />
 
         {deviceType && showBubble && (
-          <div className="fixed bottom-36 right-4 sm:right-20 z-50 flex flex-col gap-2 animate-fade-in max-w-[90vw]">
+          <div className="fixed bottom-40 right-4 sm:right-20 z-50 flex flex-col gap-2 animate-fade-in max-w-[90vw]">
             <button
               onClick={() => setShowRecommendations((prev) => !prev)}
               className="text-sm text-gray-500 hover:text-gray-700 underline self-end"
@@ -142,7 +192,9 @@ function App() {
       {/* Control Input */}
       <Control
         handleSendMessage={handleSendMessage}
+        toggleUseCache={toggleUseCache}
         onReopenModal={() => setShowModal(true)}
+        useCache={useCache}
       />
 
       {/* Device Selection Modal */}
@@ -162,6 +214,7 @@ function App() {
 const fakeMessages: Message[] = [
   {
     role: "ai",
+    cached: false,
     content: "Hi, I am your MedView Assistant. How can I help you?",
   },
 ];
