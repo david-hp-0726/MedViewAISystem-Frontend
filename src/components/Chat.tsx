@@ -1,3 +1,4 @@
+import React, { useState, useRef } from "react";
 import ReactMarkdown from "react-markdown";
 
 type Message = {
@@ -12,15 +13,37 @@ interface ChatProps {
 }
 
 function Chat({ messages, largeFont }: ChatProps) {
-  // Function to read a message aloud
-  const readAloud = (text: string) => {
-    if ("speechSynthesis" in window) {
-      const utterance = new SpeechSynthesisUtterance(text);
-      utterance.lang = "en-US"; // Set language (adjust if needed)
-      window.speechSynthesis.speak(utterance);
-    } else {
+  const [currentlySpeakingIndex, setCurrentlySpeakingIndex] = useState<
+    number | null
+  >(null);
+  const utteranceRef = useRef<SpeechSynthesisUtterance | null>(null);
+
+  const readAloud = (text: string, index: number) => {
+    if (!("speechSynthesis" in window)) {
       alert("Speech synthesis is not supported in this browser.");
+      return;
     }
+
+    // If the same message is already playing, stop it
+    if (currentlySpeakingIndex === index) {
+      window.speechSynthesis.cancel();
+      setCurrentlySpeakingIndex(null);
+      return;
+    }
+
+    // Stop any currently playing speech
+    window.speechSynthesis.cancel();
+
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = "en-US";
+
+    utterance.onend = () => {
+      setCurrentlySpeakingIndex(null);
+    };
+
+    utteranceRef.current = utterance;
+    window.speechSynthesis.speak(utterance);
+    setCurrentlySpeakingIndex(index);
   };
 
   return (
@@ -43,17 +66,15 @@ function Chat({ messages, largeFont }: ChatProps) {
               backgroundColor: role === "user" ? "#57AE5B" : "#ffffff",
               color: role === "user" ? "#ffffff" : "#333",
               fontSize: largeFont ? "1.25rem" : "1rem",
-              position: "relative", // for positioning the badge
+              position: "relative",
             }}
           >
-            {/* Optional Cached Badge */}
             {cached && (
               <span className="absolute top-1 left-2 text-xs text-blue-600 font-semibold bg-blue-100 px-2 py-0.5 rounded-full">
                 Cached
               </span>
             )}
 
-            {/* Render Markdown Content */}
             {content === "" ? (
               <div className="flex items-center space-x-2">
                 <div className="w-4 h-4 bg-gray-400 rounded-full animate-bounce" />
@@ -122,14 +143,14 @@ function Chat({ messages, largeFont }: ChatProps) {
               </ReactMarkdown>
             )}
 
-            {/* Read Aloud Button */}
+            {/* Toggle Play / Stop Button */}
             <button
-              onClick={() => readAloud(content)}
+              onClick={() => readAloud(content, index)}
               className={`ml-2 px-3 py-1 text-gray-700 rounded-md text-sm hover:bg-gray-400 transition ${
                 role === "user" ? "bg-gray-300" : "bg-gray-500"
               }`}
             >
-              🔊
+              {currentlySpeakingIndex === index ? "⏹️" : "🔊"}
             </button>
           </div>
         </div>
