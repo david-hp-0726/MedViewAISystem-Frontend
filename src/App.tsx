@@ -178,10 +178,13 @@ function App() {
             </h1>
 
             {deviceType && (
-              <span className="mt-1 sm:mt-0 text-sm sm:text-base bg-white/20 px-3 py-1 rounded-full inline-block w-fit">
+              <button
+                onClick={() => setShowModal(true)}
+                className="mt-1 sm:mt-0 text-sm sm:text-base bg-white/20 hover:bg-white/30 px-3 py-1 rounded-full inline-block w-fit"
+              >
                 <span className="hidden lg:inline">Current Device: </span>
                 {deviceType}
-              </span>
+              </button>
             )}
           </div>
 
