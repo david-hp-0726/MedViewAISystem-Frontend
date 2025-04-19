@@ -144,14 +144,14 @@ function Chat({ messages, largeFont }: ChatProps) {
             )}
 
             {/* Toggle Play / Stop Button */}
-            <button
-              onClick={() => readAloud(content, index)}
-              className={`ml-2 px-3 py-1 text-gray-700 rounded-md text-sm hover:bg-gray-400 transition ${
-                role === "user" ? "bg-gray-300" : "bg-gray-500"
-              }`}
-            >
-              {currentlySpeakingIndex === index ? "⏹️" : "🔊"}
-            </button>
+            {role === "ai" && (
+              <button
+                onClick={() => readAloud(content, index)}
+                className={`ml-2 px-3 py-1 text-gray-700 rounded-md text-sm hover:bg-gray-400 transition ${"bg-gray-500"}`}
+              >
+                {currentlySpeakingIndex === index ? "⏹️" : "🔊"}
+              </button>
+            )}
           </div>
         </div>
       ))}

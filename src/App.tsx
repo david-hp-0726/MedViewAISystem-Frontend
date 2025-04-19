@@ -25,6 +25,7 @@ const deviceList = [
 ];
 
 function App() {
+  const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<Message[]>(fakeMessages);
   const [showModal, setShowModal] = useState(true);
   const [deviceType, setDeviceType] = useState<string>("");
@@ -224,7 +225,7 @@ function App() {
                     key={index}
                     disabled={messageLoading}
                     onClick={() => {
-                      handleSendMessage(question);
+                      setMessage(question);
                     }}
                     className="bg-white/90 backdrop-blur-sm text-sm px-4 py-2 rounded-full shadow-lg hover:bg-white transition-all \
                       border border-gray-200 hover:border-blue-200 hover:text-blue-600"
@@ -245,6 +246,8 @@ function App() {
         onReopenModal={() => setShowModal(true)}
         useCache={useCache}
         messageLoading={messageLoading}
+        message={message}
+        setMessage={setMessage}
       />
 
       {/* Device Selection Modal */}

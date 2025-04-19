@@ -7,6 +7,8 @@ interface ControlProps {
   onReopenModal: () => void;
   useCache: boolean;
   messageLoading: boolean;
+  message: string;
+  setMessage: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function Control({
@@ -15,8 +17,9 @@ function Control({
   onReopenModal,
   useCache,
   messageLoading,
+  message,
+  setMessage,
 }: ControlProps) {
-  const [message, setMessage] = useState("");
   const [recordActive, setRecordActive] = useState(false);
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const [showCacheTooltip, setShowCacheTooltip] = useState(false);
