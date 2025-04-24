@@ -1,54 +1,35 @@
-<<<<<<< HEAD
-# MedViewAISystem-Frontend
-=======
-# React + TypeScript + Vite
+# MedView AI Chatbot — Frontend
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+The **MedView Chatbot** is a web-based assistant designed to help users get fast, device-specific answers to questions about their medical devices. This repository contains the React + TypeScript source code for the frontend.
 
-Currently, two official plugins are available:
+## 🌐 Live Demo
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Access the deployed web app here:  
+🔗 [https://med-view-ai-system-frontend.vercel.app/](https://med-view-ai-system-frontend.vercel.app/)
 
-## Expanding the ESLint configuration
+## 📦 Features
 
-If you are developing a production application, we recommend updating the configuration to enable type aware lint rules:
+- **Device-specific Answers**: Users select their medical device to receive personalized responses.
+- **Text & Voice Interaction**: Supports both typing and voice input via Web Speech API.
+- **Accessibility**: Large font toggle and text-to-speech for improved usability.
+- **Cache Mode**: Eco-friendly feature that retrieves pre-saved answers for common questions.
+- **Suggested Questions**: Displays 3 recommended FAQs when a device is selected.
 
-- Configure the top-level `parserOptions` property like this:
+## 🧭 Interface Overview
 
-```js
-export default tseslint.config({
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+- **Header**: App title, current device, and font size toggle.
+- **Chat Area**: Displays user questions and AI answers, including cached response tags.
+- **Control Bar**: Input field, send button, voice recording, device selector, and cache mode toggle.
 
-- Replace `tseslint.configs.recommended` to `tseslint.configs.recommendedTypeChecked` or `tseslint.configs.strictTypeChecked`
-- Optionally add `...tseslint.configs.stylisticTypeChecked`
-- Install [eslint-plugin-react](https://github.com/jsx-eslint/eslint-plugin-react) and update the config:
+## 🛠️ Local Setup
 
-```js
-// eslint.config.js
-import react from 'eslint-plugin-react'
+### Prerequisites
+- Node.js (v18+)
+- npm or yarn
 
-export default tseslint.config({
-  // Set the react version
-  settings: { react: { version: '18.3' } },
-  plugins: {
-    // Add the react plugin
-    react,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended rules
-    ...react.configs.recommended.rules,
-    ...react.configs['jsx-runtime'].rules,
-  },
-})
-```
->>>>>>> cb1d52c (First version of chatbot)
+### Commands
+```bash
+git clone https://github.com/your-username/MedViewAISystem-Frontend.git
+cd MedViewAISystem-Frontend
+npm install
+npm run dev
